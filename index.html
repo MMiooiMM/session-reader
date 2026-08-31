@@ -631,7 +631,11 @@
         if (!text) return '';
 
         const commandArgs = text.match(/<command-args>([\s\S]*?)<\/command-args>/i);
-        if (commandArgs) return commandArgs[1].trim();
+        if (commandArgs) {
+          const commandName = text.match(/<command-name>([\s\S]*?)<\/command-name>/i);
+          const args = commandArgs[1].trim();
+          return commandName ? `${commandName[1].trim()} ${args}`.trim() : args;
+        }
 
         if (/^<(?:local-command-stdout|command-name|command-message)(?:\s|>)/i.test(text)) return '';
         return text;
